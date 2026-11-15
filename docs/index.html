@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>IMove — Control iPhone location from your Mac</title>
+<meta name="description" content="Control the simulated location of a USB-connected iPhone from your Mac. Send locations, saved places and routes from Mac, Android, iPhone/iPad or the web.">
+<meta name="theme-color" content="#08150f">
+<meta property="og:title" content="IMove">
+<meta property="og:description" content="Control the simulated location of a USB-connected iPhone from your Mac.">
+<meta property="og:image" content="imove-icon.png">
+<link rel="icon" href="imove-icon.png">
+<link rel="apple-touch-icon" href="imove-icon.png">
+<style>
+  :root {
+    --bg: #08150f;
+    --bg-2: #0c1d15;
+    --card: #10251b;
+    --line: #1d3a2b;
+    --text: #e8f2ec;
+    --muted: #9db3a6;
+    --accent: #4ade80;
+    --accent-2: #27744a;
+    --radius: 18px;
+    --max: 1120px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 20px; }
+
+  /* Nav */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(8, 21, 15, .82);
+    backdrop-filter: saturate(160%) blur(14px);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .brand { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 700; font-size: 18px; }
+  .brand:hover { text-decoration: none; }
+  .brand img { width: 30px; height: 30px; }
+  nav ul { display: flex; gap: 26px; list-style: none; margin: 0; padding: 0; }
+  nav ul a { color: var(--muted); font-size: 15px; }
+  nav ul a:hover { color: var(--text); text-decoration: none; }
+  @media (max-width: 720px) { nav ul li:not(:last-child) { display: none; } }
+
+  /* Hero */
+  .hero { position: relative; overflow: hidden; padding: 96px 0 72px; text-align: center; }
+  .hero::before {
+    content: ""; position: absolute; inset: -40% -20% auto; height: 900px;
+    background: radial-gradient(closest-side, rgba(74, 222, 128, .16), transparent 70%);
+    pointer-events: none;
+  }
+  .radar { position: relative; width: 148px; height: 148px; margin: 0 auto 28px; }
+  .radar img { width: 100%; height: 100%; position: relative; z-index: 1; filter: drop-shadow(0 18px 40px rgba(74, 222, 128, .25)); }
+  .radar::after {
+    content: ""; position: absolute; inset: 0; border-radius: 50%;
+    border: 2px solid rgba(74, 222, 128, .5);
+    animation: ping 2.8s cubic-bezier(0, 0, .2, 1) infinite;
+  }
+  @keyframes ping { 0% { transform: scale(.7); opacity: .9; } 100% { transform: scale(1.9); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .radar::after { animation: none; opacity: 0; } }
+  .hero h1 { position: relative; margin: 0; font-size: clamp(44px, 8vw, 76px); letter-spacing: -.03em; line-height: 1.05; }
+  .hero p.lead { position: relative; max-width: 640px; margin: 20px auto 0; font-size: clamp(17px, 2.4vw, 20px); color: var(--muted); }
+  .cta { position: relative; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 36px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 13px 22px; border-radius: 999px; font-weight: 600; font-size: 15px;
+    border: 1px solid var(--line); color: var(--text); background: var(--card);
+    transition: transform .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .btn:hover { text-decoration: none; transform: translateY(-1px); border-color: var(--accent-2); }
+  .btn.primary { background: var(--accent); color: #062312; border-color: var(--accent); }
+  .btn.primary:hover { background: #6ee79c; }
+  .btn svg { width: 18px; height: 18px; flex: none; }
+  .meta { position: relative; margin-top: 18px; font-size: 13px; color: var(--muted); }
+
+  /* Sections */
+  section { padding: 80px 0; }
+  .eyebrow { color: var(--accent); font-weight: 600; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
+  h2 { margin: 8px 0 14px; font-size: clamp(30px, 4.5vw, 42px); letter-spacing: -.02em; line-height: 1.15; }
+  .sub { color: var(--muted); max-width: 620px; margin: 0; font-size: 17px; }
+
+  /* Flow */
+  .flow { margin-top: 40px; display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; gap: 14px; }
+  .node { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; text-align: center; }
+  .node .ic { font-size: 28px; line-height: 1; }
+  .node h3 { margin: 10px 0 4px; font-size: 17px; }
+  .node p { margin: 0; font-size: 14px; color: var(--muted); }
+  .node.mac { border-color: var(--accent-2); box-shadow: 0 0 0 1px var(--accent-2), 0 20px 50px -20px rgba(74, 222, 128, .35); }
+  .link { display: flex; flex-direction: column; align-items: center; gap: 4px; color: var(--muted); font-size: 12px; white-space: nowrap; }
+  .link .line { width: 54px; height: 2px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+  @media (max-width: 820px) {
+    .flow { grid-template-columns: 1fr; }
+    .link .line { width: 2px; height: 30px; background: linear-gradient(180deg, transparent, var(--accent), transparent); }
+  }
+
+  /* Features */
+  .grid { margin-top: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 580px) { .grid { grid-template-columns: 1fr; } }
+  .feat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+  .feat .ic {
+    width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center;
+    background: rgba(74, 222, 128, .12); color: var(--accent);
+  }
+  .feat .ic svg { width: 22px; height: 22px; }
+  .feat h3 { margin: 16px 0 6px; font-size: 17px; }
+  .feat p { margin: 0; color: var(--muted); font-size: 15px; }
+
+  /* Screens */
+  .screens { background: var(--bg-2); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .shots { margin-top: 44px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .shots figure { margin: 0; text-align: center; min-width: 0; }
+  .shots figure.wide { grid-column: 1 / -1; max-width: 880px; justify-self: center; }
+  .shots img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--line); box-shadow: 0 30px 60px -25px rgba(0, 0, 0, .7); }
+  .shots figcaption { margin-top: 12px; color: var(--muted); font-size: 14px; }
+  @media (max-width: 640px) { .shots { grid-template-columns: 1fr; } }
+
+  /* Platforms */
+  .plats { margin-top: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  @media (max-width: 900px) { .plats { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .plats { grid-template-columns: 1fr; } }
+  .plat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; display: flex; flex-direction: column; }
+  .plat .tag { align-self: flex-start; font-size: 12px; padding: 3px 10px; border-radius: 999px; background: rgba(74, 222, 128, .12); color: var(--accent); }
+  .plat h3 { margin: 14px 0 6px; font-size: 19px; }
+  .plat p { margin: 0 0 18px; color: var(--muted); font-size: 15px; flex: 1; }
+  .plat .btn { align-self: flex-start; padding: 10px 16px; font-size: 14px; }
+
+  /* Steps */
+  .steps { margin-top: 40px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; counter-reset: s; }
+  @media (max-width: 820px) { .steps { grid-template-columns: 1fr; } }
+  .step { position: relative; padding: 24px 24px 24px 72px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
+  .step::before {
+    counter-increment: s; content: counter(s);
+    position: absolute; left: 22px; top: 22px; width: 34px; height: 34px; border-radius: 50%;
+    display: grid; place-items: center; font-weight: 700; color: #062312; background: var(--accent);
+  }
+  .step h3 { margin: 4px 0 6px; font-size: 17px; }
+  .step p { margin: 0; color: var(--muted); font-size: 15px; }
+  code, pre { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+  code { background: rgba(255, 255, 255, .06); padding: 2px 6px; border-radius: 6px; font-size: .9em; color: var(--text); }
+  pre { margin: 12px 0 0; padding: 14px 16px; background: #050e0a; border: 1px solid var(--line); border-radius: 12px; overflow-x: auto; font-size: 14px; color: #c9f7da; }
+
+  /* Note */
+  .note { margin-top: 40px; padding: 22px 24px; border-radius: var(--radius); border: 1px dashed var(--accent-2); color: var(--muted); font-size: 15px; }
+  .note strong { color: var(--text); }
+
+  footer { border-top: 1px solid var(--line); padding: 36px 0 48px; color: var(--muted); font-size: 14px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 14px 28px; justify-content: space-between; align-items: center; }
+  footer .links { display: flex; gap: 22px; flex-wrap: wrap; }
+  footer a { color: var(--muted); }
+  footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <a class="brand" href="#"><img src="imove-icon.png" alt="">IMove</a>
+    <ul>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#download">Download</a></li>
+      <li><a href="https://github.com/AehoraDeSum/IMove">GitHub</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="radar"><img src="imove-icon.png" alt="IMove icon"></div>
+    <h1>IMove</h1>
+    <p class="lead">Control the simulated location of a USB-connected iPhone from your Mac. Send locations, saved places and routes from a Mac, Android, iPhone, iPad or any browser.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/AehoraDeSum/IMove/releases/download/v1.1.0/IMove-1.1.0-macOS-arm64.zip">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.4 12.6c0-2.3 1.9-3.4 2-3.5-1.1-1.6-2.8-1.8-3.4-1.8-1.4-.1-2.8.9-3.5.9-.7 0-1.8-.8-3-.8-1.5 0-3 .9-3.8 2.3-1.6 2.8-.4 7 1.2 9.3.8 1.1 1.7 2.4 2.9 2.3 1.2 0 1.6-.7 3-.7s1.8.7 3 .7c1.3 0 2.1-1.1 2.8-2.3.9-1.3 1.3-2.6 1.3-2.6s-2.5-1-2.5-3.8zM14.1 5.8c.6-.8 1.1-1.9 1-3-.9 0-2.1.6-2.7 1.4-.6.7-1.1 1.8-1 2.9 1 .1 2.1-.5 2.7-1.3z"/></svg>
+        Download for Mac
+      </a>
+      <a class="btn" href="https://github.com/AehoraDeSum/IMove/releases/download/v1.1.0/IMove-1.1.0-Android.apk">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.6 9.5l1.7-3a.4.4 0 00-.7-.4l-1.8 3A10.5 10.5 0 0012 8.2c-1.7 0-3.3.4-4.8 1l-1.8-3a.4.4 0 00-.7.3l1.7 3A9.9 9.9 0 002 17.5h20a9.9 9.9 0 00-4.4-8zM7.3 14.8a1 1 0 110-2 1 1 0 010 2zm9.4 0a1 1 0 110-2 1 1 0 010 2z"/></svg>
+        Android APK
+      </a>
+      <a class="btn" href="https://github.com/AehoraDeSum/IMove">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5a11.5 11.5 0 00-3.6 22.4c.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 015.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A11.5 11.5 0 0012 .5z"/></svg>
+        Source code
+      </a>
+    </div>
+    <div class="meta">Version 1.1.0 · macOS 14+ (Apple Silicon) · Android · iOS/iPadOS 15+ · GPL-3.0</div>
+  </div>
+</header>
+
+<section id="how">
+  <div class="wrap">
+    <div class="eyebrow">How it works</div>
+    <h2>Commands come from anywhere. The Mac delivers them.</h2>
+    <p class="sub">The Mac app sends locations to the iPhone over USB. Other devices reach the Mac over a private Tailscale network using a 32-character pairing code.</p>
+    <div class="flow">
+      <div class="node">
+        <div class="ic">📱</div>
+        <h3>Controller</h3>
+        <p>Android, iPhone, iPad or a web browser</p>
+      </div>
+      <div class="link"><span class="line"></span>Tailscale Serve · HTTPS</div>
+      <div class="node mac">
+        <div class="ic">💻</div>
+        <h3>IMove on Mac</h3>
+        <p>Places, routes and control server</p>
+      </div>
+      <div class="link"><span class="line"></span>USB</div>
+      <div class="node">
+        <div class="ic">📍</div>
+        <h3>Target iPhone</h3>
+        <p>Simulated location applied</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features" style="padding-top:0">
+  <div class="wrap">
+    <div class="eyebrow">Features</div>
+    <h2>Not just a point. A whole route.</h2>
+    <div class="grid">
+      <div class="feat">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
+        <h3>Send a location</h3>
+        <p>Type a coordinate or pick one on the map. The location is refreshed over USB every 1–60 seconds.</p>
+      </div>
+      <div class="feat">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/><path d="M8 19h7a3.5 3.5 0 000-7H9a3.5 3.5 0 010-7h7"/></svg></div>
+        <h3>Routes with unlimited stops</h3>
+        <p>Give each segment its own minutes and seconds, or split the total time evenly. Reshape the path with waypoints.</p>
+      </div>
+      <div class="feat">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M9 21l1-4M15 21l-1-4"/><circle cx="9" cy="14" r=".5"/><circle cx="15" cy="14" r=".5"/></svg></div>
+        <h3>Istanbul rail network</h3>
+        <p>B1 Marmaray, M2 and M6 stations, plus the Yenikapı and Levent transfers, in an offline catalogue.</p>
+      </div>
+      <div class="feat">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="2"/><path d="M10 22l2-7 3 3v4M7 13l3-5 4 1 3 3"/></svg></div>
+        <h3>Walking paths</h3>
+        <p>Walking paths follow Apple Maps pedestrian routing. If Apple Maps does not respond, FOSSGIS Valhalla is used.</p>
+      </div>
+      <div class="feat">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-4-7 4V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div>
+        <h3>Shared saved places</h3>
+        <p>Places live on the Mac. Android, iOS and the web all see the same list as shortcuts.</p>
+      </div>
+      <div class="feat">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></div>
+        <h3>Private and secure</h3>
+        <p>Connections only happen over a private Tailscale network. The pairing code is stored in the Android Keystore and iOS Keychain.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="screens">
+  <div class="wrap" style="text-align:center">
+    <div class="eyebrow">Screens</div>
+    <h2>A native Mac app at the center.</h2>
+    <p class="sub" style="margin:0 auto">Built with SwiftUI and MapKit, with a test mode that never touches a real device.</p>
+    <div class="shots">
+      <figure class="wide"><img src="screenshots/mac-location.png" alt="IMove Location screen" loading="lazy"><figcaption>Location</figcaption></figure>
+      <figure><img src="screenshots/mac-routes.png" alt="IMove Routes screen with an Istanbul rail section" loading="lazy"><figcaption>Routes</figcaption></figure>
+      <figure><img src="screenshots/mac-places.png" alt="IMove Saved places screen" loading="lazy"><figcaption>Saved places</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="download">
+  <div class="wrap">
+    <div class="eyebrow">Download</div>
+    <h2>An interface for every device.</h2>
+    <div class="plats">
+      <div class="plat">
+        <span class="tag">Required</span>
+        <h3>Mac</h3>
+        <p>The main app. The USB tool is bundled, so there is no Python to install. Requires Apple Silicon and macOS 14 or later.</p>
+        <a class="btn primary" href="https://github.com/AehoraDeSum/IMove/releases/download/v1.1.0/IMove-1.1.0-macOS-arm64.zip">ZIP · 50 MB</a>
+      </div>
+      <div class="plat">
+        <span class="tag">Controller</span>
+        <h3>Android</h3>
+        <p>Location, map, routes and phone tracking. Full-screen map with dark and light styles.</p>
+        <a class="btn" href="https://github.com/AehoraDeSum/IMove/releases/download/v1.1.0/IMove-1.1.0-Android.apk">APK</a>
+      </div>
+      <div class="plat">
+        <span class="tag">Controller</span>
+        <h3>iPhone / iPad</h3>
+        <p>A SwiftUI app for iPhone and iPad in a single Xcode project. Sign it with your own developer team to install.</p>
+        <a class="btn" href="https://github.com/AehoraDeSum/IMove/tree/main/ios">Xcode project</a>
+      </div>
+      <div class="plat">
+        <span class="tag">Controller</span>
+        <h3>Web</h3>
+        <p>The control page served by the Mac. Opens in any browser on your private network, with nothing to install.</p>
+        <a class="btn" href="https://github.com/AehoraDeSum/IMove/tree/main/macos/Web">Source</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="eyebrow">Getting started</div>
+    <h2>Ready in three steps.</h2>
+    <div class="steps">
+      <div class="step">
+        <h3>Install on the Mac</h3>
+        <p>Unzip the download and move <code>IMove.app</code> to Applications. If macOS warns on first launch, right-click the app and choose Open.</p>
+      </div>
+      <div class="step">
+        <h3>Connect the iPhone</h3>
+        <p>Plug it in over USB and unlock it. Scan for and select it on the Connection screen, and mount the developer image if asked.</p>
+      </div>
+      <div class="step">
+        <h3>Go remote</h3>
+        <p>Start the control page from Remote access, then run this on the Mac:</p>
+        <pre>tailscale serve --bg 8765</pre>
+      </div>
+    </div>
+    <div class="note">
+      <strong>Note:</strong> A normally signed iOS app cannot change the system location of the device it runs on, so only the iPhone connected to the Mac over USB is affected. Rail line geometry is approximate and contains no real-time service data. This is a personal project built for development and testing.
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>IMove · GPL-3.0 · Map data © OpenStreetMap contributors</div>
+    <div class="links">
+      <a href="https://github.com/AehoraDeSum/IMove">GitHub</a>
+      <a href="https://github.com/AehoraDeSum/IMove/releases">Releases</a>
+      <a href="https://github.com/AehoraDeSum/IMove/blob/main/LICENSE">License</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

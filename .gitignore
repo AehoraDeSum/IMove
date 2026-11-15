@@ -1,0 +1,35 @@
+# macOS
+.DS_Store
+
+# macOS app (Swift)
+macos/work/
+macos/.build/
+macos/IMove.app/
+macos/.usb-build/
+macos/.usb-dist
+macos/.build-usb-venv/
+macos/.portable-test/
+
+# Android
+android/.gradle/
+android/.gradle-user/
+android/.android-user/
+android/.signing/
+android/build/
+android/app/build/
+android/local.properties
+*.keystore
+*.jks
+
+# Xcode
+DerivedData/
+xcuserdata/
+*.xcuserstate
+
+# Python
+__pycache__/
+*.pyc
+
+# Release artefacts (published via GitHub Releases)
+*.apk
+*.zip

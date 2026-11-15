@@ -1,0 +1,4 @@
+<resources>
+    <string name="tracking_starting">Starting relay…</string>
+    <string name="tracking_off">5-minute relay is off.</string>
+</resources>

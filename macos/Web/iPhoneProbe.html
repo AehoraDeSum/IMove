@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IMove · iPhone location reading</title>
+<style>
+  :root{font-family:-apple-system,BlinkMacSystemFont,sans-serif;color-scheme:dark;background:#091711;color:#effff3}
+  body{max-width:560px;margin:35px auto;padding:0 20px;line-height:1.5}
+  h1{font-size:27px}p{color:#a5bcac}label{display:block;margin:20px 0 6px;font-weight:600}
+  input{width:100%;box-sizing:border-box;padding:13px;border:1px solid #2a4b36;border-radius:9px;font-size:16px;background:#13291e;color:#effff3}
+  button{border:0;border-radius:9px;padding:13px 17px;background:#4ae083;color:#082016;font-size:15px;font-weight:600;margin:16px 8px 0 0}
+  button:disabled{opacity:.5}.secondary{background:#193629;color:#effff3}
+  #status{margin-top:24px;padding:16px;border-radius:10px;background:#13291e;color:#effff3;white-space:pre-wrap}
+</style>
+<h1>iPhone location reading</h1>
+<p>Open this page <strong>in Safari on the iPhone connected over USB</strong>. Once location access is granted, it sends the iPhone's own Core Location reading to the Mac and compares it with the last USB command.</p>
+<p>While the page is visible it tries a reading about every 10 seconds. It stops if the screen locks or Safari goes to the background. A match does not confirm what the other person sees in Find My.</p>
+<label for="code">Mac pairing code</label><input id="code" type="password" maxlength="32" autocomplete="off" autocapitalize="off" spellcheck="false">
+<button id="start">Start reading</button><button id="stop" class="secondary" disabled>Stop</button>
+<div id="status" role="status">Reading not started.</div>
+<script src="/iphone-probe.js" defer></script>
+</html>

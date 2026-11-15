@@ -1,0 +1,251 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B20000000000000000000065 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000001 /* Models.swift */; };
+		B20000000000000000000066 /* IMoveAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000002 /* IMoveAPI.swift */; };
+		B20000000000000000000067 /* DeviceLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000003 /* DeviceLocation.swift */; };
+		B20000000000000000000068 /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000004 /* AppStore.swift */; };
+		B20000000000000000000069 /* MapCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000005 /* MapCanvas.swift */; };
+		B2000000000000000000006A /* IMoveMobileApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000006 /* IMoveMobileApp.swift */; };
+		B2000000000000000000006B /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000007 /* DashboardView.swift */; };
+		B2000000000000000000006C /* PlacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000008 /* PlacesView.swift */; };
+		B2000000000000000000006D /* RoutesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000009 /* RoutesView.swift */; };
+		B2000000000000000000006E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2000000000000000000000A /* SettingsView.swift */; };
+		B200000000000000000000CA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B200000000000000000000C9 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B20000000000000000000001 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		B20000000000000000000002 /* IMoveAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMoveAPI.swift; sourceTree = "<group>"; };
+		B20000000000000000000003 /* DeviceLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceLocation.swift; sourceTree = "<group>"; };
+		B20000000000000000000004 /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
+		B20000000000000000000005 /* MapCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCanvas.swift; sourceTree = "<group>"; };
+		B20000000000000000000006 /* IMoveMobileApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IMoveMobileApp.swift; sourceTree = "<group>"; };
+		B20000000000000000000007 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		B20000000000000000000008 /* PlacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesView.swift; sourceTree = "<group>"; };
+		B20000000000000000000009 /* RoutesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutesView.swift; sourceTree = "<group>"; };
+		B2000000000000000000000A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B200000000000000000000C9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B200000000000000000000CB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B200000000000000000000CC /* IMoveMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IMoveMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B20000000000000000000193 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B2000000000000000000012D = {
+			isa = PBXGroup;
+			children = (
+				B2000000000000000000012E /* IMoveMobile */,
+				B2000000000000000000012F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B2000000000000000000012E /* IMoveMobile */ = {
+			isa = PBXGroup;
+			children = (
+				B20000000000000000000001 /* Models.swift */,
+				B20000000000000000000002 /* IMoveAPI.swift */,
+				B20000000000000000000003 /* DeviceLocation.swift */,
+				B20000000000000000000004 /* AppStore.swift */,
+				B20000000000000000000005 /* MapCanvas.swift */,
+				B20000000000000000000006 /* IMoveMobileApp.swift */,
+				B20000000000000000000007 /* DashboardView.swift */,
+				B20000000000000000000008 /* PlacesView.swift */,
+				B20000000000000000000009 /* RoutesView.swift */,
+				B2000000000000000000000A /* SettingsView.swift */,
+				B200000000000000000000C9 /* Assets.xcassets */,
+				B200000000000000000000CB /* Info.plist */,
+			);
+			path = IMoveMobile;
+			sourceTree = "<group>";
+		};
+		B2000000000000000000012F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B200000000000000000000CC /* IMoveMobile.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B200000000000000000001F5 /* IMoveMobile */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B20000000000000000000259 /* Build configuration list for PBXNativeTarget "IMoveMobile" */;
+			buildPhases = (
+				B20000000000000000000191 /* Sources */,
+				B20000000000000000000193 /* Frameworks */,
+				B20000000000000000000192 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IMoveMobile;
+			productName = IMoveMobile;
+			productReference = B200000000000000000000CC /* IMoveMobile.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B200000000000000000001F6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					B200000000000000000001F5 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = B2000000000000000000025A /* Build configuration list for PBXProject "IMoveMobile" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B2000000000000000000012D;
+			productRefGroup = B2000000000000000000012F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B200000000000000000001F5 /* IMoveMobile */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B20000000000000000000192 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B200000000000000000000CA /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B20000000000000000000191 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B20000000000000000000065 /* Models.swift in Sources */,
+				B20000000000000000000066 /* IMoveAPI.swift in Sources */,
+				B20000000000000000000067 /* DeviceLocation.swift in Sources */,
+				B20000000000000000000068 /* AppStore.swift in Sources */,
+				B20000000000000000000069 /* MapCanvas.swift in Sources */,
+				B2000000000000000000006A /* IMoveMobileApp.swift in Sources */,
+				B2000000000000000000006B /* DashboardView.swift in Sources */,
+				B2000000000000000000006C /* PlacesView.swift in Sources */,
+				B2000000000000000000006D /* RoutesView.swift in Sources */,
+				B2000000000000000000006E /* SettingsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B200000000000000000002BD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = IMoveMobile/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = local.imove.mobile;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B200000000000000000002BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = IMoveMobile/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_BUNDLE_IDENTIFIER = local.imove.mobile;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B200000000000000000002BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B200000000000000000002C0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B20000000000000000000259 /* Build configuration list for PBXNativeTarget "IMoveMobile" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B200000000000000000002BD /* Debug */,
+				B200000000000000000002BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B2000000000000000000025A /* Build configuration list for PBXProject "IMoveMobile" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B200000000000000000002BF /* Debug */,
+				B200000000000000000002C0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B200000000000000000001F6 /* Project object */;
+}

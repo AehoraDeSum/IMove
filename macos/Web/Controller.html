@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b2117">
+  <title>IMove · Remote location</title>
+  <style>
+    :root { color-scheme: dark; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; --bg:#091711; --panel:#13291e; --panel2:#193629; --line:#2a4b36; --text:#effff3; --muted:#a5bcac; --accent:#4ae083; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--text); }
+    header { background: #0b2117; color: var(--text); padding: max(25px, env(safe-area-inset-top)) 22px 32px; border-bottom:1px solid var(--line); }
+    .wrap { max-width: 700px; margin: auto; }
+    .brand { display: flex; align-items: center; gap: 11px; font-size: 26px; font-weight: 720; letter-spacing: -.04em; }
+    .mark { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background:var(--accent); color:#082016; font-size: 21px; }
+    .subtitle { margin: 13px 0 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+    main { padding: 18px 18px max(28px, env(safe-area-inset-bottom)); }
+    section { background: var(--panel); border: 1px solid var(--line); border-radius: 18px; padding: 21px; margin-bottom: 16px; box-shadow: 0 8px 28px #0002; }
+    h1 { font-size: 23px; margin: 0 0 8px; letter-spacing: -.03em; }
+    h2 { font-size: 17px; margin: 0 0 16px; }
+    p { line-height: 1.5; }
+    .muted { color: var(--muted); font-size: 13px; }
+    label { display: block; font-size: 12px; font-weight: 640; margin: 15px 0 7px; }
+    input[type=text], input[type=password], input[type=number], select { width: 100%; padding: 14px 13px; font-size: 16px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel2); color: var(--text); }
+    input:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+    .row { display: flex; gap: 12px; }
+    .row > div { flex: 1; min-width: 0; }
+    .actions { display: flex; flex-wrap: wrap; align-items:center; gap: 10px; margin-top: 18px; }
+    button { appearance: none; border: 1px solid var(--line); border-radius: 10px; background: var(--panel2); color: var(--text); padding: 12px 15px; font: inherit; font-size: 14px; font-weight: 640; cursor: pointer; }
+    button.primary { background: var(--accent); color: #082016; border-color: var(--accent); }
+    button:disabled { opacity: .55; cursor: not-allowed; }
+    .pill { display: inline-block; border-radius: 999px; background: var(--panel2); color: var(--muted); padding: 7px 11px; font-size: 12px; font-weight: 650; }
+    .pill.ready { background: #174a2d; color: #8ff7af; }
+    .notice { padding: 13px 15px; border-radius: 11px; background: var(--panel2); color: var(--text); font-size: 13px; line-height: 1.45; min-height: 45px; }
+    .notice.error { background: #48221d; color: #ffb4a5; }
+    .checkbox { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: normal; }
+    .checkbox input { width: 18px; height: 18px; accent-color: var(--accent); }
+    .quick { display: flex; align-items:center; gap: 8px; margin-top: 15px; overflow-x:auto; padding-bottom:4px; }
+    .quick button { padding: 7px 11px; font-size: 12px; white-space:nowrap; }
+    .quick-label { color:var(--muted); font-size:11px; font-weight:650; letter-spacing:.08em; white-space:nowrap; }
+    .quick-empty { color:var(--muted); font-size:12px; white-space:nowrap; }
+    .place { border-top: 1px solid var(--line); padding: 12px 0; }
+    .place:first-child { border-top: 0; }
+    .place strong { display: block; }
+    .place .actions { margin-top: 8px; }
+    .route-point { font: 12px ui-monospace, monospace; padding: 5px 0; color: var(--muted); }
+    .route-leg { display: flex; align-items: center; gap: 8px; padding: 5px 0; }
+    .route-leg input, #routeTotalFields input { width: 75px; padding: 10px; font-size: 16px; border: 1px solid var(--line); border-radius: 8px; }
+    .map-shell { border:1px solid var(--line); border-radius:14px; overflow:hidden; background:#0d2518; }
+    .map-toolbar { display:flex; align-items:center; justify-content:space-between; gap:10px; padding:10px 12px; background:var(--panel2); }
+    .map-toolbar span { color:var(--muted); font-size:12px; }
+    .map-toolbar button { padding:8px 11px; font-size:12px; }
+    iframe.map { display:block; width:100%; height:min(58vh,520px); min-height:360px; border:0; background:#0d2518; }
+    .map-shell.expanded { position:fixed; inset:0; z-index:2000; border:0; border-radius:0; display:flex; flex-direction:column; }
+    .map-shell.expanded .map-toolbar { padding:max(12px, env(safe-area-inset-top)) 15px 12px; }
+    .map-shell.expanded iframe.map { flex:1; height:auto; min-height:0; }
+    body.map-open { overflow:hidden; }
+    a { color: var(--accent); }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <header><div class="wrap"><div class="brand"><span class="mark">◎</span> IMove</div><p class="subtitle">Personal location control for an iPhone connected to a Mac</p></div></header>
+  <main class="wrap">
+    <section id="pairing">
+      <h1>Connect to your Mac</h1>
+      <p class="muted">Enter the pairing code shown on the Remote access screen of the Mac app.</p>
+      <label for="code">Pairing code</label>
+      <input id="code" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="32-character code">
+      <label class="checkbox"><input id="remember" type="checkbox" checked> Remember the code on this device</label>
+      <div class="actions"><button id="connect" class="primary">Connect</button></div>
+    </section>
+
+    <div id="controls" hidden>
+      <section>
+        <span id="readiness" class="pill">Reading status…</span>
+        <p id="lastSent" class="muted">Last sent location unknown.</p>
+      </section>
+      <section>
+        <h2>Send a location</h2>
+        <div class="row">
+          <div><label for="latitude">Latitude</label><input id="latitude" type="text" inputmode="decimal" placeholder="41.0082"></div>
+          <div><label for="longitude">Longitude</label><input id="longitude" type="text" inputmode="decimal" placeholder="28.9784"></div>
+        </div>
+        <div id="quickPlaces" class="quick" aria-label="Quick access to saved places"><span class="quick-label">SAVED PLACES</span><span class="quick-empty">Your places will appear here once you connect.</span></div>
+        <label class="checkbox"><input id="autoRenew" type="checkbox"> Auto-refresh this location on the Mac</label>
+        <div class="actions"><button id="send" class="primary">Send to iPhone</button><button id="current">Send my current location</button></div>
+        <p class="muted">The send result only confirms the USB command. Check the location in Find My with the person you share it with.</p>
+      </section>
+      <section>
+        <h2>USB refresh interval</h2>
+        <p class="muted">Shared setting for fixed-location refresh and route waypoints. A new USB command does not start until the previous one finishes, so the actual interval may be longer.</p>
+        <label for="intervalSelect">Resend at most every</label>
+        <select id="intervalSelect"><option value="1">1 second</option><option value="2">2 seconds</option><option value="5">5 seconds</option><option value="10">10 seconds</option><option value="20" selected>20 seconds</option><option value="30">30 seconds</option><option value="60">60 seconds</option></select>
+        <div class="actions"><button id="saveInterval">Save interval</button><button id="stopRefresh" hidden>Stop location refresh</button></div>
+        <p id="refreshState" class="muted">Reading refresh status…</p>
+      </section>
+      <section>
+        <h2>Pick on the map</h2>
+        <p class="muted">Tapping the map fills in the coordinates above. With route drawing on, each tap adds the next point. The blue marker is the last sent coordinate; no live location is read from the iPhone.</p>
+        <div id="mapShell" class="map-shell"><div class="map-toolbar"><span id="mapMode">Pick a location or route point on the map</span><button id="mapExpand" type="button">Full screen ↗</button></div><iframe id="mapFrame" class="map" src="/map" title="Location map" loading="lazy"></iframe></div>
+        <p class="muted">The map needs an internet connection. You can save or send the place you pick.</p>
+      </section>
+      <section>
+        <h2>Routes</h2>
+        <p class="muted">Choose B1 Marmaray, M2 and M6 stations and add transfers. You can edit walking paths and waypoints on the map.</p>
+        <div class="row"><div><label for="railLine">Line</label><select id="railLine"></select></div><div><label for="railBoard">Board at</label><select id="railBoard"></select></div><div><label for="railAlight">Alight at</label><select id="railAlight"></select></div></div>
+        <div class="actions"><button id="railWalk">Walk to boarding station</button><button id="railAdd" class="primary">Add line to route</button></div>
+        <p class="muted">Nearby transfers at Levent and Yenikapı are connected automatically. For distant boarding points, add a walking segment first. Line geometry is approximate map data, not live service information. The M2 Şişhane–Taksim path is also incomplete.</p>
+        <div class="actions"><button id="routeMode">Start drawing route</button><button id="routeUndo">Undo last point</button><button id="routeClear">Clear draft</button></div>
+        <div id="routeDraft"></div>
+        <div class="row"><div><label for="editLeg">Segment to edit</label><select id="editLeg"></select></div></div>
+        <div class="actions"><button id="addVia">Add waypoints on map</button><button id="walkLeg">Snap selected segment to streets</button></div>
+        <p class="muted">In waypoint mode, tap the map to reshape the segment by hand; the walking calculation passes through these waypoints. Apple Maps is used online, with FOSSGIS Valhalla as a fallback.</p>
+        <label for="routeName">Route name</label><input id="routeName" type="text" maxlength="50" placeholder="e.g. seaside route">
+        <label for="routeTimingMode">Timing</label><select id="routeTimingMode"><option value="equal">Split total time evenly</option><option value="custom">Set each segment separately</option></select>
+        <div id="routeTotalFields"><label for="routeMinutes">Total duration</label><div class="actions"><input id="routeMinutes" type="number" min="0" step="1" value="5" aria-label="Minutes"><span>min</span><input id="routeSeconds" type="number" min="0" max="59" step="1" value="0" aria-label="Seconds"><span>s</span></div></div>
+        <div id="routeLegFields" hidden><p class="muted">Enter minutes and seconds for each pair of stops.</p><div id="routeLegList"></div></div>
+        <p id="routeTotalSummary" class="muted"></p>
+        <div class="actions"><button id="routeSave" class="primary">Save route</button><button id="routeRefresh">Refresh routes</button></div>
+        <p id="routeStatus" class="muted">No active route.</p>
+        <button id="routeStop" hidden>Stop route</button>
+        <div id="routesList"></div>
+      </section>
+      <section id="placesSection">
+        <h2>Saved places</h2>
+        <p class="muted">Save the coordinates above under a name. The list is kept on the Mac and appears on your paired devices.</p>
+        <label for="placeName">Place name</label><input id="placeName" type="text" maxlength="50" placeholder="e.g. home">
+        <div class="actions"><button id="savePlace">Save these coordinates</button><button id="refreshPlaces">Refresh list</button></div>
+        <div id="placesList" aria-live="polite"></div>
+      </section>
+      <section>
+        <h2>Try tracking my location</h2>
+        <p class="muted">While this page stays open and visible, it sends your device's location every 5 minutes. To keep relaying with the screen off, use the IMove Android app.</p>
+        <div class="actions"><button id="startLive">Start 5-minute updates</button><button id="stopLive" hidden>Stop updates</button></div>
+      </section>
+      <section>
+        <h2>Remove location</h2>
+        <p class="muted">This may cause the iPhone to return to its real location.</p>
+        <button id="clear">Remove simulated location</button>
+      </section>
+    </div>
+    <div id="message" class="notice" role="status" aria-live="polite">Waiting for connection.</div>
+  </main>
+  <script src="/controller.js" defer></script>
+</body>
+</html>
